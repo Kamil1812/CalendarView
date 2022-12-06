@@ -41,11 +41,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_powrot).setOnClickListener {
-            val nigger = findViewById<CalendarView>(R.id.kalendarz).date
+            val a = findViewById<CalendarView>(R.id.kalendarz).date
 
-            if (nigger - departure_date > 0)
+            if (a - departure_date > 0)
             {
-                date_of_return = nigger
+                date_of_return = a
                 findViewById<TextView>(R.id.textView_powrot).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
             }
             else
