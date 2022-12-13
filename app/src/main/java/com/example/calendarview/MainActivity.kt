@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         var departure_date = 0L
         var date_of_return = 0L
+        val data = findViewById<CalendarView>(R.id.kalendarz).date
 
         findViewById<TextView>(R.id.textView_wyjazd).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString() // TEXTVIEW OTRZYMUJE WARTOSC WYJAZDU (DEFAULT: DZISIEJSZA DATA)
         findViewById<TextView>(R.id.textView_powrot).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString() // TEXTVIEW OTRZYMUJE WARTOSC POWROTU (DEFAULT: DZISIEJSZA DATA)
@@ -32,14 +33,23 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_przyjazd).setOnClickListener { // USTAWIENIE DATY PRZYJAZDU
             val a = findViewById<CalendarView>(R.id.kalendarz).date
 
-            if (date_of_return - a < 0)
+            if (date_of_return >= departure_date)
             {
-                findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu jest przed datą przyjazdu! Błąd!"
+                if (date_of_return - a < 0) // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD I NIE OBLICZA RÓŻNICY
+                {
+                    findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu jest przed datą przyjazdu! Błąd!"
+                }
+
+                else
+                {
+                    departure_date = a
+                    findViewById<TextView>(R.id.textView_ERROR).text = ""
+                    findViewById<TextView>(R.id.textView_wyjazd).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
+                }
             }
 
             else
             {
-                departure_date = a
                 findViewById<TextView>(R.id.textView_ERROR).text = ""
                 findViewById<TextView>(R.id.textView_wyjazd).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
             }
@@ -68,15 +78,33 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_count).setOnClickListener { // OBLICZANIE RÓŻNICY
 
-            if (departure_date != 0L && date_of_return != 0L)
+            if (departure_date == data)
             {
-                if (departure_date <= date_of_return) // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD I NIE OBLICZA RÓŻNICY
+                departure_date += 86400000
+            }
+
+            if (date_of_return == data)
+            {
+                date_of_return += 86400000
+            }
+
+            if (departure_date != 0L && date_of_return != 0L) // SPRAWDZENIE: CZY DATY ZOSTAŁY ZATWIERDZONE
+            {
+                if (departure_date < date_of_return) // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD I NIE OBLICZA RÓŻNICY
                 {
                     findViewById<TextView>(R.id.textView_ERROR).text = ""
 
-                    val result = (date_of_return - departure_date) / 86400000 // OBLICZANIE DŁUGOŚCI WYJAZDU, ZMIANA MILISEKUND NA DNI
-                    findViewById<TextView>(R.id.textView_ERROR).text = "Wyjazd trwa " + result + " dni"
+                    val result = ((date_of_return - departure_date) / 86400000)// OBLICZANIE DŁUGOŚCI WYJAZDU, ZMIANA MILISEKUND NA DNI
+                    findViewById<TextView>(R.id.textView_count).text = ""
+                    findViewById<TextView>(R.id.textView_count).text = "Wyjazd trwa " + result + " dni"
 
+                }
+
+                else if (departure_date <= date_of_return)
+                {
+                    val result = ((date_of_return - departure_date) / 86400000) // OBLICZANIE DŁUGOŚCI WYJAZDU, ZMIANA MILISEKUND NA DNI
+                    findViewById<TextView>(R.id.textView_count).text = ""
+                    findViewById<TextView>(R.id.textView_count).text = "Wyjazd trwa " + result + " dni"
                 }
 
                 else
@@ -85,9 +113,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            else
+            else if (departure_date == 0L && date_of_return == 0L) // ZABECZPIECZENIE: ŻADNA DATA NIE ZOSTAŁA ZATWIERDZONA
             {
-                findViewById<TextView>(R.id.textView_ERROR).text = "Wyjazd trwa 0 dni"
+                findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu i powrotu nie została zatwierdzona! Błąd!"
+            }
+
+            else if (departure_date == 0L && date_of_return != 0L) // ZABEZPIECZENIE: DATA WYJAZDU NIE ZOSTAŁA ZATWIERDZONA
+            {
+                findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu nie została zatwierdzona! Błąd!"
+            }
+
+            else if (departure_date != 0L && date_of_return == 0L) // ZABEZPIECZENIE: DATA POWROTU NIE ZOSTAŁA ZATWIERDZONA
+            {
+                findViewById<TextView>(R.id.textView_ERROR).text = "Data powrotu nie została zatwierdzona! Błąd!"
             }
         }
     }
