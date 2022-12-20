@@ -32,61 +32,82 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_przyjazd).setOnClickListener { // USTAWIENIE DATY PRZYJAZDU
             val a = findViewById<CalendarView>(R.id.kalendarz).date
+            val dd = findViewById<CalendarView>(R.id.kalendarz).minDate
 
-            if (date_of_return >= departure_date)
+            if  (date_of_return != 0L)
             {
-                if (date_of_return - a < 0) // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD I NIE OBLICZA RÓŻNICY
-                {
-                    findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu jest przed datą przyjazdu! Błąd!"
-                }
-
-                else
+                if (a == dd)
                 {
                     departure_date = a
                     findViewById<TextView>(R.id.textView_ERROR).text = ""
                     findViewById<TextView>(R.id.textView_wyjazd).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
                 }
+
+                else
+                {
+                    if (date_of_return >= departure_date)
+                    {
+                        if (date_of_return - a < 0) // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD I NIE OBLICZA RÓŻNICY
+                        {
+                            findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu jest przed datą przyjazdu! Błąd!"
+                        }
+
+                        else
+                        {
+                            departure_date = a
+                            findViewById<TextView>(R.id.textView_ERROR).text = ""
+                            findViewById<TextView>(R.id.textView_wyjazd).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
+                        }
+                    }
+
+                    else
+                    {
+                        findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu jest przed datą przyjazdu! Błąd!"
+                    }
+                }
             }
 
             else
             {
+                departure_date = a
                 findViewById<TextView>(R.id.textView_ERROR).text = ""
                 findViewById<TextView>(R.id.textView_wyjazd).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
             }
         }
 
-        val a = findViewById<CalendarView>(R.id.kalendarz)
+        val b = findViewById<CalendarView>(R.id.kalendarz)
 
-        a.setOnDateChangeListener { calendarView, i, i2, i3 ->
-            a.date = Date.UTC(i - 1900, i2, i3, 4, 4, 0)
+        b.setOnDateChangeListener { calendarView, i, i2, i3 ->
+            b.date = Date.UTC(i - 1900, i2, i3, 4, 4, 0)
         }
 
         findViewById<Button>(R.id.btn_powrot).setOnClickListener { // USTAWIENIE DATY POWROTU
             val a = findViewById<CalendarView>(R.id.kalendarz).date
 
-            if (a - departure_date >= 0)  // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD
+            if (departure_date != 0L)
             {
-                date_of_return = a
-                findViewById<TextView>(R.id.textView_ERROR).text = ""
-                findViewById<TextView>(R.id.textView_powrot).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
+                if (a - departure_date >= 0)  // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD
+                {
+                    date_of_return = a
+                    findViewById<TextView>(R.id.textView_ERROR).text = ""
+                    findViewById<TextView>(R.id.textView_powrot).text = formatter.format(findViewById<CalendarView>(R.id.kalendarz).date).toString()
+                }
+                else
+                {
+                    findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu jest przed datą przyjazdu! Błąd!"
+                }
             }
+
             else
             {
-                findViewById<TextView>(R.id.textView_ERROR).text = "Data wyjazdu jest przed datą przyjazdu! Błąd!"
+                findViewById<TextView>(R.id.textView_ERROR).text = "Najpierw zatwierdź datę wyjazdu!"
             }
         }
 
         findViewById<Button>(R.id.btn_count).setOnClickListener { // OBLICZANIE RÓŻNICY
 
-            if (departure_date == data)
-            {
-                departure_date += 86400000
-            }
+            findViewById<TextView>(R.id.textView_count).text = ""
 
-            if (date_of_return == data)
-            {
-                date_of_return += 86400000
-            }
 
             if (departure_date != 0L && date_of_return != 0L) // SPRAWDZENIE: CZY DATY ZOSTAŁY ZATWIERDZONE
             {
@@ -94,17 +115,15 @@ class MainActivity : AppCompatActivity() {
                 {
                     findViewById<TextView>(R.id.textView_ERROR).text = ""
 
-                    val result = ((date_of_return - departure_date) / 86400000)// OBLICZANIE DŁUGOŚCI WYJAZDU, ZMIANA MILISEKUND NA DNI
+                    val result = ((date_of_return - departure_date) / 86400000) + 1 // OBLICZANIE DŁUGOŚCI WYJAZDU, ZMIANA MILISEKUND NA DNI
                     findViewById<TextView>(R.id.textView_count).text = ""
                     findViewById<TextView>(R.id.textView_count).text = "Wyjazd trwa " + result + " dni"
-
                 }
 
-                else if (departure_date <= date_of_return)
+                else if (departure_date == date_of_return)
                 {
-                    val result = ((date_of_return - departure_date) / 86400000) // OBLICZANIE DŁUGOŚCI WYJAZDU, ZMIANA MILISEKUND NA DNI
                     findViewById<TextView>(R.id.textView_count).text = ""
-                    findViewById<TextView>(R.id.textView_count).text = "Wyjazd trwa " + result + " dni"
+                    findViewById<TextView>(R.id.textView_count).text = "Wyjazd trwa 0 dni"
                 }
 
                 else
