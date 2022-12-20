@@ -49,20 +49,20 @@ class MainActivity : AppCompatActivity() {
                     {
                         if (date_of_return - a < 0) // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD I NIE OBLICZA RÓŻNICY
                         {
-                            findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                            findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
                         }
 
                         else
                         {
                             departure_date = a
-                            findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
-                            findViewById<TextView>(R.id.textView_wyjazd).text = R.string.amogus
+                            findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
+                            findViewById<TextView>(R.id.textView_wyjazd).text = R.string.amogus.toString()
                         }
                     }
 
                     else
                     {
-                        findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                        findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
                     }
                 }
             }
@@ -70,8 +70,8 @@ class MainActivity : AppCompatActivity() {
             else
             {
                 departure_date = a
-                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
-                findViewById<TextView>(R.id.textView_wyjazd).text = R.string.amogus
+                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
+                findViewById<TextView>(R.id.textView_wyjazd).text = R.string.amogus.toString()
             }
         }
 
@@ -89,62 +89,62 @@ class MainActivity : AppCompatActivity() {
                 if (a - departure_date >= 0)  // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD
                 {
                     date_of_return = a
-                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
-                    findViewById<TextView>(R.id.textView_powrot).text = R.string.amogus
+                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
+                    findViewById<TextView>(R.id.textView_powrot).text = R.string.amogus.toString()
                 }
                 else
                 {
-                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
                 }
             }
 
             else
             {
-                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
             }
         }
 
         findViewById<Button>(R.id.btn_count).setOnClickListener { // OBLICZANIE RÓŻNICY
 
-            findViewById<TextView>(R.id.textView_count).text = R.string.amogus
+            findViewById<TextView>(R.id.textView_count).text = R.string.amogus.toString()
 
 
             if (departure_date != 0L && date_of_return != 0L) // SPRAWDZENIE: CZY DATY ZOSTAŁY ZATWIERDZONE
             {
                 if (departure_date < date_of_return) // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD I NIE OBLICZA RÓŻNICY
                 {
-                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
 
                     val result = ((date_of_return - departure_date) / 86400000) + 1 // OBLICZANIE DŁUGOŚCI WYJAZDU, ZMIANA MILISEKUND NA DNI
-                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus
-                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus
+                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus.toString()
+                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus.toString()
                 }
 
                 else if (departure_date == date_of_return) // GDY DZIEN PRZYJAZDU JEST TAKI SAM JAK DATA POWROTU
                 {
-                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus
-                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus
+                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus.toString()
+                    findViewById<TextView>(R.id.textView_count).text = R.string.amogus.toString()
                 }
 
                 else
                 {
-                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                    findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
                 }
             }
 
             else if (departure_date == 0L && date_of_return == 0L) // ZABECZPIECZENIE: ŻADNA DATA NIE ZOSTAŁA ZATWIERDZONA
             {
-                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
             }
 
             else if (departure_date == 0L && date_of_return != 0L) // ZABEZPIECZENIE: DATA WYJAZDU NIE ZOSTAŁA ZATWIERDZONA
             {
-                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
             }
 
             else if (departure_date != 0L && date_of_return == 0L) // ZABEZPIECZENIE: DATA POWROTU NIE ZOSTAŁA ZATWIERDZONA
             {
-                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus
+                findViewById<TextView>(R.id.textView_ERROR).text = R.string.amogus.toString()
             }
         }
     }
