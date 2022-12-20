@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             val a = findViewById<CalendarView>(R.id.kalendarz).date
             val dd = findViewById<CalendarView>(R.id.kalendarz).minDate
 
-            if  (date_of_return != 0L)
+            if  (date_of_return != 0L) // SPRAWDZENIE: CZY ZOSTAŁA ZATWIERDZONA DATA POWROTU
             {
                 if (a == dd)
                 {
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_powrot).setOnClickListener { // USTAWIENIE DATY POWROTU
             val a = findViewById<CalendarView>(R.id.kalendarz).date
 
-            if (departure_date != 0L)
+            if (departure_date != 0L) // SPRAWDZENIE: CZY ZOSTAŁA ZATWIERDZONA DATA PRZYJAZDU
             {
                 if (a - departure_date >= 0)  // ZABEZPIECZENIE: GDY DATA POWROTU JEST STARSZA OD DATY PRZYJAZDU WYRZUCA BŁĄD
                 {
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.textView_count).text = "Wyjazd trwa " + result + " dni"
                 }
 
-                else if (departure_date == date_of_return)
+                else if (departure_date == date_of_return) // GDY DZIEN PRZYJAZDU JEST TAKI SAM JAK DATA POWROTU
                 {
                     findViewById<TextView>(R.id.textView_count).text = ""
                     findViewById<TextView>(R.id.textView_count).text = "Wyjazd trwa 0 dni"
